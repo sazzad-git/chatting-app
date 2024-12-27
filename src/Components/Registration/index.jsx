@@ -1,6 +1,10 @@
 import { useFormik } from "formik";
 import { signUp } from "../../validation/Validation";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  sendEmailVerification,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 
@@ -30,11 +34,34 @@ const RegFormComp = ({ toast }) => {
       formik.values.email,
       formik.values.password
     )
-      .then((userCredential) => {
+      .then(() => {
         // Signed up
-        setLoading(false);
-        const user = userCredential.user;
-        console.log(user);
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            toast.success("Email sent for verification", {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setLoading(false);
+          })
+          .catch((error) => {
+            toast.error(error.message, {
+              position: "top-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          });
         // ...
       })
       .catch((error) => {
