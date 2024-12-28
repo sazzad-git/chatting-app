@@ -3,11 +3,15 @@ import { signIn } from "../../validation/Validation";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { loggedInUser } from "../../features/Slices/LoginSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginFromComp = ({ toast }) => {
   const [loading, setLoading] = useState(false);
-
   const auth = getAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const initialValues = {
     email: "",
@@ -30,9 +34,11 @@ const LoginFromComp = ({ toast }) => {
       formik.values.password
     )
       .then(({ user }) => {
-        setLoading(false);
         if (user?.emailVerified === true) {
-          console.log("true");
+          setLoading(false);
+          dispatch(loggedInUser(user));
+          localStorage.setItem("user", JSON.stringify(user));
+          navigate("/");
         } else {
           toast.error("Please verify your email", {
             position: "top-right",
@@ -44,12 +50,24 @@ const LoginFromComp = ({ toast }) => {
             progress: undefined,
             theme: "light",
           });
+          setLoading(false);
         }
-        console.log(user?.emailVerified);
       })
       .catch((error) => {
-        setLoading(false);
-        console.log(error.message);
+        const errorMessage = error.message;
+        if (errorMessage.includes("auth/invalid-credential")) {
+          toast.error("Email or password is incorrect", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+          setLoading(false);
+        }
       });
   };
 
@@ -92,7 +110,10 @@ const LoginFromComp = ({ toast }) => {
           </button>
         </form>
         <p className="mt-5 text-base text-gray-400 font-fontRegular">
-          don&apos;t have an account? Sign up
+          don&apos;t have an account?{" "}
+          <Link className="text-blue-500 hover:underline" to="/registration">
+            Sign up
+          </Link>
         </p>
       </div>
     </>

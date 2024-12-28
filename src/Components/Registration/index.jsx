@@ -7,11 +7,12 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { BeatLoader } from "react-spinners";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegFormComp = ({ toast }) => {
   const [loading, setLoading] = useState(false);
-
   const auth = getAuth();
+  const navigate = useNavigate();
 
   const initialValues = {
     fullName: "",
@@ -48,6 +49,12 @@ const RegFormComp = ({ toast }) => {
               progress: undefined,
               theme: "light",
             });
+            let redirecting = setTimeout(() => {
+              navigate("/login");
+            }, 2000);
+            if (redirecting === true) {
+              clearTimeout(redirecting);
+            }
             setLoading(false);
           })
           .catch((error) => {
@@ -139,7 +146,10 @@ const RegFormComp = ({ toast }) => {
         </button>
       </form>
       <p className="mt-5 text-base text-gray-400 font-fontRegular">
-        Already have an account? Sign in
+        Already have an account?{" "}
+        <Link className="text-blue-500 hover:underline" to="/login">
+          Sign in
+        </Link>
       </p>
     </div>
   );
