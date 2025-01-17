@@ -10,13 +10,18 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import LoggedInUserRoute from "./PrivateRoute/LoggedInUserRoute";
 import NotLoggedInUser from "./PrivateRoute/NotLoggedInUser";
+import Messages from "./pages/Messages";
+import RootLayout from "./Components/RootLayout";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
         <Route element={<LoggedInUserRoute />}>
-          <Route path="/" element={<Home />} />
+          <Route element={<RootLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/message" element={<Messages />} />
+          </Route>
         </Route>
 
         <Route element={<NotLoggedInUser />}>
