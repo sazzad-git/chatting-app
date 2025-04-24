@@ -4,6 +4,7 @@ import { MessageIcon } from "../../svg/Message";
 import { getAuth, signOut } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "../../features/Slices/LoginSlice";
+import { CameraIcon } from "../../svg/camera";
 
 const Navbar = () => {
   const location = useLocation();
@@ -29,7 +30,13 @@ const Navbar = () => {
     <>
       <div className="flex items-center justify-between py-3 bg-slate-900">
         <div className="flex items-center gap-x-2">
-          <div className="w-14 ml-2 h-14 rounded-full bg-orange-200 overflow-hidden"></div>
+          <div className="relative">
+            <div className="w-16 ml-2 h-16 rounded-full bg-orange-200 overflow-hidden"></div>
+
+            <div className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center">
+              <CameraIcon />
+            </div>
+          </div>
           <div>
             <span className="font-fontRegular text-white">Sazzadur Rahman</span>
           </div>

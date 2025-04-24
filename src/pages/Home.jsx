@@ -1,3 +1,5 @@
+import FriendRequest from "../Components/FriendRequest";
+import Friends from "../Components/Friends";
 import UserLists from "../Components/UserList";
 
 const Home = () => {
@@ -7,9 +9,13 @@ const Home = () => {
         <div className="w-full">
           <UserLists />
         </div>
-        <div className="w-full grid grid-cols-2 gap-x-20">
-          <div>absdhj</div>
-          <div>absdhj</div>
+        <div className="w-full grid grid-cols-2 gap-x-2">
+          <div>
+            <FriendRequest />
+          </div>
+          <div>
+            <Friends />
+          </div>
         </div>
       </div>
     </>
